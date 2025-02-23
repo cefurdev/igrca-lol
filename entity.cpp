@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <math.h>
 #include <vector>
+#include <iterator>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -108,15 +109,19 @@ player getPosition(player object, SDL_Event event){
             switch(event.key.keysym.sym){
                 case SDLK_w:
                     object.ycord-=15;
+                    object.centery-=15;
                     break;
                 case SDLK_s:
                     object.ycord+=15;
+                    object.centery+=15;
                     break;
                 case SDLK_a:
                     object.xcord-=15;
+                    object.centerx-=15;
                     break;
                 case SDLK_d:
                     object.xcord+=15;
+                    object.centerx+=15;
                     break;
                 default:
                    break;
@@ -154,11 +159,31 @@ player checkPlayerWater(player object, puddle puddleObject){
         return object;
     }
 
-    else if(object.xcord<=puddleObject.xcord+puddleObject.width && object.xcord>=puddleObject.xcord && object.ycord<=puddleObject.ycord+puddleObject.height && object.ycord>=puddleObject.ycord){
+    else if(sqrt(pow(object.centerx-puddleObject.centerx, 2)+pow(object.centery-puddleObject.centery, 2))<60){
+        
         object.water=true;
     }
     else{
         object.water=false;
     }
+    cout<<sqrt(pow(object.centerx-puddleObject.centerx, 2)+pow(object.centery-puddleObject.centery, 2))<<endl;
     return object;
+}
+//kolizija med igrlacem in ognjem
+
+void playerFireCollision(player *object, vector<fire> fireVector){
+    for(int i=0; i<fireVector.size(); i++){
+        if(sqrt(pow(object->centerx-fireVector[i].centerx, 2)+pow(object->centery-fireVector[i].centery, 2))<50){
+            cout<<sqrt(pow(object->centerx-fireVector[i].centerx, 2)+pow(object->centery-fireVector[i].centery, 2))<<endl;
+            if(object->water==true){
+                fireVector.erase(fireVector.begin()+i);
+                object->water=false;
+            }
+            else{
+                cout<<"Game over"<<endl;
+                exit(0);
+            }
+        }
+    }
+    
 }

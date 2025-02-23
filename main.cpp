@@ -4,6 +4,7 @@
 #include "entity.h"
 #include <math.h>
 #include <vector>
+#include <iterator>
 
 using namespace std;
 
@@ -55,7 +56,7 @@ int main(int argc, char** argv) {
         cout<<counter<<"  "<<fireNumber<<endl;
         counter++;
         Uint32 frameStart = SDL_GetTicks();
-        if(counter>=40)
+        if(counter>=600)
         {   
             next=fireSpread(fireVector[rand()%fireVector.size()], fireVector);
             while((next.xcord==current.xcord) && (next.ycord==current.ycord)){
@@ -82,6 +83,8 @@ int main(int argc, char** argv) {
         }
         //preverjanje ce je igralec v vodi
         object=checkPlayerWater(object, puddleObject);
+        //preverjanje ce je igralec v ognju
+        playerFireCollision(&object, fireVector);
         // brisanje starega frejma
         SDL_RenderClear(renderer);
         //risanje ozadja
@@ -107,7 +110,7 @@ int main(int argc, char** argv) {
         
         
         
-        //xcordprev=object.xcord; 
+        
         // risnje novega frejma
         SDL_RenderPresent(renderer);
 

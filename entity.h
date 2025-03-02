@@ -44,4 +44,4 @@ player getPosition(player object, SDL_Event event);
 bool checkFirestartpos(vector<fire> fireVector, player playerObject, puddle puddleObject);
 SDL_Texture* setTexture(SDL_Renderer* renderer, const char* path);
 player checkPlayerWater(player object, puddle puddleObject);
-void playerFireCollision(player *object, vector<fire> fireVector);
+player checkPlayerFire(player object, vector<fire>* fireVector,int counter);

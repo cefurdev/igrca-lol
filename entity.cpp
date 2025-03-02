@@ -5,7 +5,7 @@
 #include <math.h>
 #include <vector>
 #include <iterator>
-
+using namespace std;
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
@@ -159,7 +159,7 @@ player checkPlayerWater(player object, puddle puddleObject){
         return object;
     }
 
-    else if(sqrt(pow(object.centerx-puddleObject.centerx, 2)+pow(object.centery-puddleObject.centery, 2))<60){
+    else if(sqrt(pow(object.centerx-puddleObject.centerx, 2)+pow(object.centery-puddleObject.centery, 2))<75){
         
         object.water=true;
     }
@@ -170,20 +170,28 @@ player checkPlayerWater(player object, puddle puddleObject){
     return object;
 }
 //kolizija med igrlacem in ognjem
-
-void playerFireCollision(player *object, vector<fire> fireVector){
-    for(int i=0; i<fireVector.size(); i++){
-        if(sqrt(pow(object->centerx-fireVector[i].centerx, 2)+pow(object->centery-fireVector[i].centery, 2))<50){
-            cout<<sqrt(pow(object->centerx-fireVector[i].centerx, 2)+pow(object->centery-fireVector[i].centery, 2))<<endl;
-            if(object->water==true){
-                fireVector.erase(fireVector.begin()+i);
-                object->water=false;
-            }
-            else{
-                cout<<"Game over"<<endl;
-                exit(0);
-            }
+player checkPlayerFire(player object, vector<fire>* fireVector, int counter){ //counter je tu za tako imenovane "invincibility frejme" oz. cas ko ogenj ne more ubiti igralca
+    //najprej iskanje najblizjega ognja
+    int closest=0;
+    for(int i=0; i<fireVector->size(); i++){
+        if(sqrt(pow(object.centerx-(*fireVector)[i].centerx, 2)+pow(object.centery-(*fireVector)[i].centery, 2))<sqrt(pow(object.centerx-(*fireVector)[closest].centerx, 2)+pow(object.centery-(*fireVector)[closest].centery, 2))){
+            closest=i;
         }
     }
-    
+    //ce je igralec v ognju
+    if(sqrt(pow(object.centerx-(*fireVector)[closest].centerx, 2)+pow(object.centery-(*fireVector)[closest].centery, 2))<75){
+        if(object.water){
+            object.water=false;
+            fireVector->erase(fireVector->begin()+closest);
+            
+            
+        }
+        else if(object.water==false && counter%100==0){
+            object.xcord=rand()%SCREEN_WIDTH;
+            object.ycord=rand()%SCREEN_HEIGHT;
+            object.centerx=object.xcord+object.width/2;
+            object.centery=object.ycord+object.height/2;
+        }
+    }
+    return object;   
 }

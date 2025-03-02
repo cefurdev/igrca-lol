@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
     IMG_Init(IMG_INIT_JPG);
     IMG_Init(IMG_INIT_PNG);
 
-    window = SDL_CreateWindow("lol loser", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    window = SDL_CreateWindow("Resi amazonski pragozd!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     // nalaganj tekstur
@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
     fire next;
     int fireNumber=1;
     while (running) {
-        cout<<counter<<"  "<<fireNumber<<endl;
+        //cout<<counter<<"  "<<fireNumber<<endl;
         counter++;
         Uint32 frameStart = SDL_GetTicks();
         if(counter>=600)
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
         //preverjanje ce je igralec v vodi
         object=checkPlayerWater(object, puddleObject);
         //preverjanje ce je igralec v ognju
-        playerFireCollision(&object, fireVector);
+        object=checkPlayerFire(object, &fireVector, counter);
         // brisanje starega frejma
         SDL_RenderClear(renderer);
         //risanje ozadja

@@ -26,6 +26,8 @@ class player{
     int centerx;
     int centery;
     player();
+
+
 };
 class fire{
     public:
@@ -40,8 +42,10 @@ class fire{
 };
 
 fire fireSpread(fire predhodnik, vector<fire> fireVector);
-player getPosition(player object, SDL_Event event);
+player getPosition(player object, SDL_Event event, float deltaTime);
 bool checkFirestartpos(vector<fire> fireVector, player playerObject, puddle puddleObject);
 SDL_Texture* setTexture(SDL_Renderer* renderer, const char* path);
 player checkPlayerWater(player object, puddle puddleObject);
-player checkPlayerFire(player object, vector<fire>* fireVector,int counter);
+player checkPlayerFire(player object, vector<fire>* fireVector);
+void moveEnemiesAndIgniteFire(vector<player>& enemies, vector<fire>& fireVector, Uint32& lastActionTime);
+void removeEnemyIfClose(player& object, vector<player>& enemies);
